@@ -13,7 +13,8 @@ import Avatar from "./ui/Avatar";
 
 
 
-const url = "https://cdn.pixabay.com/photo/2014/04/02/10/16/fire-303309_640.png";
+// const url = "https://cdn.pixabay.com/photo/2014/04/02/10/16/fire-303309_640.png";
+const url = "https://levitation.in/wp-content/uploads/2023/12/Frame-39624.svg";
 
 
 const user = {
@@ -35,8 +36,7 @@ const Header = () => {
         <nav className="flex justify-between px-8 py-4 w-full bg-primary-100">
             <div className="flex  justify-center items-center">
                 <Link className="flex items-center gap-3" to={"/"}>
-                    <img src={url} alt="logo" className="min-w-[30px] w-8" />
-                    <h1 className="hidden sm:block title font-bold text-primary-txt">E-Invoicer</h1>
+                    <img src={url} alt="logo" className="min-w-[120px] w-32" />
                 </Link>
             </div>
             <ul className="header flex justify-end items-center gap-4 xs:gap-7 sm:gap-10">
