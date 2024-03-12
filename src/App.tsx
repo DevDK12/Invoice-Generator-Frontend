@@ -11,6 +11,7 @@ import Layout from './components/Layout/Layout';
 
 
 const Home = lazy(() => import('./pages/home'));
+const Addproduct =  lazy(() => import('./pages/add-product'));
 
 
 
@@ -27,6 +28,7 @@ const App = () => {
 
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path='/add-product' element={<Addproduct />} />
       </Route>
 
 

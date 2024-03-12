@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import Products from "../components/Products";
+import {data} from '../utils/products';
 
 
 const Home = () => {
@@ -10,6 +13,18 @@ const Home = () => {
         >
             <section className="w-full h-[18.75rem">
                 <div className="cover-image h-[18.75rem] rounded-md"></div>
+            </section>
+
+            <section className="px-4 py-2 flex flex-col gap-12">
+                <div className="flex justify-between items-baseline">
+                    <h1 className="title lg:text-4xl lg:tracking-wide lg:font-normal">Latest Products</h1>
+                    <Link to="/add-product" className="subtitle lg:text-lg underline">
+                        More
+                    </Link>
+                </div>
+                <Products 
+                    products={data.products}
+                />
             </section>
 
         </div>
