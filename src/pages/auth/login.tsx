@@ -5,7 +5,7 @@ import { useLoginUserMutation } from "../../redux/api/userApi";
 import toast from "react-hot-toast";
 import { ICustomError } from "../../types/api-types";
 import { useDispatch } from "react-redux";
-import { saveUser } from "../../redux/reducer/user-slice";
+import { deleteUser, saveUser } from "../../redux/reducer/user-slice";
 
 
 
@@ -50,15 +50,28 @@ const Login = () => {
                 throw err;
             }
 
-            const { status, message, data : {user: userRes , accessToken} } = response.data;
+            const { status, message, data : {user: userRes , accessToken, expiryTime} } = response.data;
             if (status === 'success') {
                 const user = {
                     ...userRes,
                     token: accessToken,
+                    expiry: expiryTime,
                 }
-                // console.log(response.data.data.expiryTime);
+
+                localStorage.setItem('user', JSON.stringify(user));
+
                 dispatch(saveUser(user));
                 toast.success(message);
+
+                const expiry = new Date(user.expiry).getTime() - new Date().getTime();
+
+                const timer = setTimeout(() => {
+                    dispatch(deleteUser());
+                    localStorage.clear();
+                    toast.success('Login session expired');
+                    clearTimeout(timer);
+                }, expiry);
+
                 navigate('/');
             }
 

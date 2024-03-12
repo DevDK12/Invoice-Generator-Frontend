@@ -36,6 +36,7 @@ const Header = () => {
 
     const logoutHandler = async () => {
         dispatch(deleteUser());
+        localStorage.clear();
         toast.success('User logout successfully');
     };
 

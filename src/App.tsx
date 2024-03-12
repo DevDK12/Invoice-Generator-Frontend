@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 import { IUserReducerInitialState } from './types/user-types';
-import { deleteUser } from './redux/reducer/user-slice';
+import { deleteUser, saveUser } from './redux/reducer/user-slice';
 
 
 import Login from './pages/auth/login';
 import Signup from './pages/auth/signup';
 import Layout from './components/Layout/Layout';
+import toast from 'react-hot-toast';
 
 
 
@@ -29,8 +30,24 @@ const App = () => {
 
   useEffect(() => {
 
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      const user = JSON.parse(userString);
 
-    dispatch(deleteUser());
+      dispatch(saveUser(user));
+      const expiry = new Date(user.expiry).getTime() - new Date().getTime();
+
+      const timer = setTimeout(() => {
+        dispatch(deleteUser());
+        localStorage.clear();
+        toast.success('Login session expired');
+        clearTimeout(timer);
+      }, expiry);
+
+    }
+    else {
+      dispatch(deleteUser());
+    }
 
   }, [dispatch])
 
