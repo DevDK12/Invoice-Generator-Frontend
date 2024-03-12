@@ -1,6 +1,9 @@
 import { FormEvent, useState } from "react";
 import Input from "../../components/ui/Input"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useRegisterUserMutation } from "../../redux/api/userApi";
+import { ICustomError } from "../../types/api-types";
 
 
 
@@ -10,17 +13,50 @@ const logo = "https://cdn.pixabay.com/photo/2014/04/02/10/16/fire-303309_640.png
 
 
 
+
 const Signup = () => {
+
+    const navigate = useNavigate();
 
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
+    const [registerUser] = useRegisterUserMutation();
 
 
     const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const user = {
+            name,
+            email,
+            password,
+        }
+
+        try {
+
+            const response = await registerUser(user);
+
+            if ('error' in response) {
+                const err = response.error;
+                if ('data' in err) {
+                    throw err.data;
+                }
+                throw err;
+            }
+
+            const { status, message } = response.data;
+            if (status === 'success') {
+                toast.success(message);
+                navigate('/login');
+            }
+
+        }
+        catch (error) {
+            const err = error as ICustomError;
+            toast.error(err.message);
+        }
     };
 
 
@@ -77,7 +113,7 @@ const Signup = () => {
 
                             </div>
                             <div className="lg:pl-32 grid place-items-center gap-2 mt-8">
-                            <button className="bg-cyan-400 text-white font-semibold text-sm w-2/5 mx-auto py-1 rounded-md"
+                                <button className="bg-cyan-400 text-white font-semibold text-sm w-2/5 mx-auto py-1 rounded-md"
                                     type="submit">
                                     Signup
                                 </button>

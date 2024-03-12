@@ -1,6 +1,11 @@
 import { FormEvent, useState } from "react";
 import Input from "../../components/ui/Input"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLoginUserMutation } from "../../redux/api/userApi";
+import toast from "react-hot-toast";
+import { ICustomError } from "../../types/api-types";
+import { useDispatch } from "react-redux";
+import { saveUser } from "../../redux/reducer/user-slice";
 
 
 
@@ -10,17 +15,59 @@ const logo = "https://cdn.pixabay.com/photo/2014/04/02/10/16/fire-303309_640.png
 
 
 
+
 const Login = () => {
 
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+
+    const [loginUser] = useLoginUserMutation();
+
 
 
 
     const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const user = {
+            name,
+            email,
+            password,
+        }
+
+
+        try {
+            const response = await loginUser(user);
+
+            if ('error' in response) {
+                const err = response.error;
+                if ('data' in err) {
+                    throw err.data;
+                }
+                throw err;
+            }
+
+            const { status, message, data : {user: userRes , accessToken} } = response.data;
+            if (status === 'success') {
+                const user = {
+                    ...userRes,
+                    token: accessToken,
+                }
+                // console.log(response.data.data.expiryTime);
+                dispatch(saveUser(user));
+                toast.success(message);
+                navigate('/');
+            }
+
+        }
+        catch (error) {
+            console.log(error);
+            const err = error as ICustomError;
+            toast.error(err.message);
+        }
     };
 
 

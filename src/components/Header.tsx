@@ -5,6 +5,10 @@ import {
 } from "react-icons/fa";
 import { useState } from "react";
 import Avatar from "./ui/Avatar";
+import { useDispatch, useSelector } from "react-redux";
+import { IUserReducerInitialState } from "../types/user-types";
+import { deleteUser } from "../redux/reducer/user-slice";
+import toast from "react-hot-toast";
 
 
 
@@ -17,19 +21,22 @@ import Avatar from "./ui/Avatar";
 const url = "https://levitation.in/wp-content/uploads/2023/12/Frame-39624.svg";
 
 
-const user = {
-    // _id: 'asdfkjdskf',
-    name: 'Dev Kumar',
-    email: 'dev@email.com'
-}
+
+
+
 
 const Header = () => {
+
+    const dispatch = useDispatch();
+
+    const { user } = useSelector((state: { userSlice: IUserReducerInitialState }) => state.userSlice);
 
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const logoutHandler = async () => {
-
+        dispatch(deleteUser());
+        toast.success('User logout successfully');
     };
 
     return (
@@ -41,17 +48,17 @@ const Header = () => {
             </div>
             <ul className="header flex justify-end items-center gap-4 xs:gap-7 sm:gap-10">
                 <li>
-                    <NavLink className={({ isActive }) => isActive ? "text-cyan-500" : "hover:text-cyan-200"} onClick={() => setIsOpen(false)} to={"/"}>
+                    <NavLink className={({ isActive }) => isActive ? "text-cyan-500" : "hover:text-cyan-200"} to={"/"}>
                         HOME
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink className={({ isActive }) => isActive ? "text-cyan-500" : "hover:text-cyan-200"} onClick={() => setIsOpen(false)} to={"/add-product"}>
+                    <NavLink className={({ isActive }) => isActive ? "text-cyan-500" : "hover:text-cyan-200"} to={"/add-product"}>
                         Add product
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink className={({ isActive }) => isActive ? "text-cyan-500" : "hover:text-cyan-200"} onClick={() => setIsOpen(false)} to={"/cart"}>
+                    <NavLink className={({ isActive }) => isActive ? "text-cyan-500" : "hover:text-cyan-200"} to={"/cart"}>
                         <FaShoppingBag />
                     </NavLink>
                 </li>
