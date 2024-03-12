@@ -28,6 +28,8 @@ const App = () => {
 
   const { loading: userLoaidng, user } = useSelector((state: { userSlice: IUserReducerInitialState }) => state.userSlice);
 
+
+
   useEffect(() => {
 
     const userString = localStorage.getItem('user');
@@ -52,16 +54,16 @@ const App = () => {
   }, [dispatch])
 
 
-  const isLoggedIn = user ? true : false;
-
-
+  
+  
   if (userLoaidng)
     return <div className='h-screen w-screen title grid place-items-center'>Loading user...</div>;
 
 
+    
 
-
-
+    
+    const isLoggedIn = user ? true : false;
 
 
 
@@ -76,7 +78,7 @@ const App = () => {
 
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
-        <Route path='/add-product' element={!isLoggedIn ? <Addproduct /> : <Navigate to='/' />} />
+        <Route path='/add-product' element={isLoggedIn ? <Addproduct /> : <Navigate to='/login' />} />
       </Route>
 
 

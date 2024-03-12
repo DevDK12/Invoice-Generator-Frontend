@@ -72,7 +72,7 @@ const Header = () => {
                                 onAvatar={() => setIsOpen(prev => !prev)}
                             />
                             <dialog open={isOpen} >
-                                <div className="bg-primary-100 text-primary-txt flex flex-col px-6 py-4 gap-5 fixed top-20 right-14 rounded-2xl rounded-tr-none min-w-[250px]">
+                                <div className="z-50 bg-primary-100 text-primary-txt flex flex-col px-6 py-4 gap-5 fixed top-20 right-14 rounded-2xl rounded-tr-none min-w-[250px]">
                                     <p >{user.name}</p>
                                     <p >{user.email}</p>
                                     <button
