@@ -1,10 +1,28 @@
 import { Link } from "react-router-dom";
 import Products from "../components/Products";
-import {data} from '../utils/products';
+import { useLatestProductsQuery } from "../redux/api/productApi";
+import { ErrorResponse } from "../types/api-types";
+import toast from "react-hot-toast";
+// import {data} from '../utils/products';
 
 
 const Home = () => {
 
+    const { data, isError, isLoading, isSuccess, error } = useLatestProductsQuery();
+
+
+    let products;
+    if (isError) {
+        const err = error as ErrorResponse;
+        toast.error(err.data.message);
+    }
+    if (isLoading) {
+        products = <p>Loading products...</p>
+    }
+    if (isSuccess) {
+        const {  data: { products: latestProducts } } = data;
+        products = <Products products={latestProducts} />
+    }
 
 
     return (
@@ -22,9 +40,7 @@ const Home = () => {
                         More
                     </Link>
                 </div>
-                <Products 
-                    products={data.products}
-                />
+                {products}
             </section>
 
         </div>

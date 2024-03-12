@@ -1,3 +1,4 @@
+import { TProduct } from "./product-types";
 import { TUser } from "./user-types"
 
 
@@ -27,3 +28,9 @@ export interface ErrorResponse {
 }
 
 
+export type ProductsResponse = {
+    status: string,
+    data: {
+        products: TProduct[]
+    }
+}
