@@ -16,6 +16,7 @@ import toast from 'react-hot-toast';
 
 const Home = lazy(() => import('./pages/home'));
 const Addproduct = lazy(() => import('./pages/add-product'));
+const Cart =  lazy(() => import('./pages/cart'));
 
 
 
@@ -54,16 +55,16 @@ const App = () => {
   }, [dispatch])
 
 
-  
-  
+
+
   if (userLoaidng)
     return <div className='h-screen w-screen title grid place-items-center'>Loading user...</div>;
 
 
-    
 
-    
-    const isLoggedIn = user ? true : false;
+
+
+  const isLoggedIn = user ? true : false;
 
 
 
@@ -79,6 +80,7 @@ const App = () => {
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path='/add-product' element={isLoggedIn ? <Addproduct /> : <Navigate to='/login' />} />
+        <Route path='/cart' element={isLoggedIn ? <Cart /> : <Navigate to='/login' />} />
       </Route>
 
 
