@@ -54,9 +54,9 @@ const Cart = () => {
                     <img src={logo} alt="logo" className="w-36" />
                 </div>
                 <div className="flex flex-col">
-                    <span className="flex justify-between"><p>Total: </p><p>₹{total}</p></span>
-                    <span className="flex justify-between"><p>GST: </p><p>₹{GST}</p></span>
-                    <span className="flex justify-between font-bold"><p>GrandTotal: </p><p className="text-blue-400">₹{GrandTotal}</p></span>
+                    <span className="flex justify-between"><p>Total: </p><p>INR {total.toFixed(2)}</p></span>
+                    <span className="flex justify-between"><p>GST: </p><p>₹ {GST.toFixed(2)}</p></span>
+                    <span className="flex justify-between font-bold"><p>GrandTotal: </p><p className="text-blue-400">₹ {GrandTotal.toFixed(2)}</p></span>
                 </div>
 
                 {cartItems.length > 0 && <button className="bg-cyan-400 font-semibold px-3 py-2 rounded-md text-center" >Generate Invoice</button>}

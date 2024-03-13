@@ -1,4 +1,7 @@
+import toast from "react-hot-toast"
 import { FaPlus } from "react-icons/fa"
+import { useSelector } from "react-redux"
+import { IUserReducerInitialState } from "../types/user-types"
 
 
 interface ProductCardProps {
@@ -16,6 +19,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ photo, name, price, handler }: ProductCardProps) => {
 
+    const { user } = useSelector((state: { userSlice: IUserReducerInitialState }) => state.userSlice);
 
     return (
         <div className="rounded-md h-[250px] w-3/4 xs:w-full relative flex flex-col gap-4 pb-4 group cursor-pointer bg-primary-100 
@@ -34,9 +38,13 @@ const ProductCard = ({ photo, name, price, handler }: ProductCardProps) => {
 
             <button
                 className="bg-cyan-600 w-8 h-8 hidden place-items-center rounded-full group-hover:grid transition-all duration-500 hover:rotate-180  absolute z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                onClick={() =>
-                    handler()
-                }
+                onClick={() => {
+                    if (!user) {
+                        return toast.error('Please login to add to cart');
+                    }
+                    toast.success(`${name} added to cart`);
+                    return handler();
+                }}
             >
                 <FaPlus />
             </button>
