@@ -10,8 +10,6 @@ import { deleteUser, saveUser } from "../../redux/reducer/user-slice";
 
 
 
-const logo = "https://cdn.pixabay.com/photo/2014/04/02/10/16/fire-303309_640.png";
-
 
 
 
@@ -50,7 +48,7 @@ const Login = () => {
                 throw err;
             }
 
-            const { status, message, data : {user: userRes , accessToken, expiryTime} } = response.data;
+            const { status, message, data: { user: userRes, accessToken, expiryTime } } = response.data;
             if (status === 'success') {
                 const user = {
                     ...userRes,
@@ -72,7 +70,7 @@ const Login = () => {
                     clearTimeout(timer);
                 }, expiry);
 
-                navigate('/');
+                navigate('/add-product');
             }
 
         }
@@ -102,9 +100,6 @@ const Login = () => {
                             onSubmit={submitHandler}
                             className="flex flex-col gap-2 sm:gap-4 lg:gap-4"
                         >
-                            <div className="flex  justify-center items-center">
-                                <img src={logo} alt="logo" className="w-12 lg:w-16 2xl:w-20" />
-                            </div>
                             <h1 className="title lg:text-3xl mb-7">Welcome Back</h1>
 
                             <Input

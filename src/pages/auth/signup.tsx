@@ -8,7 +8,6 @@ import { ICustomError } from "../../types/api-types";
 
 
 
-const logo = "https://cdn.pixabay.com/photo/2014/04/02/10/16/fire-303309_640.png";
 
 
 
@@ -80,9 +79,6 @@ const Signup = () => {
                             onSubmit={submitHandler}
                             className="flex flex-col gap-2 sm:gap-4 lg:gap-4"
                         >
-                            <div className="flex  justify-center items-center">
-                                <img src={logo} alt="logo" className="w-12 lg:w-16 2xl:w-20" />
-                            </div>
                             <h1 className="title lg:text-3xl mb-7">Create New Account</h1>
 
                             <Input

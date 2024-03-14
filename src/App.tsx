@@ -10,6 +10,7 @@ import { deleteUser, saveUser } from './redux/reducer/user-slice';
 import Login from './pages/auth/login';
 import Signup from './pages/auth/signup';
 import Layout from './components/Layout/Layout';
+
 import toast from 'react-hot-toast';
 
 
@@ -82,7 +83,6 @@ const App = () => {
         <Route path='/add-product' element={isLoggedIn ? <Addproduct /> : <Navigate to='/login' />} />
         <Route path='/cart' element={isLoggedIn ? <Cart /> : <Navigate to='/login' />} />
       </Route>
-
 
     </Routes>
   )

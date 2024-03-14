@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { ICartReducerInitialState } from '../types/cart-types';
 import { addItemToCart, deleteItemFromCart, removeItemFromCart } from "../redux/reducer/cart-slice";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { IUserReducerInitialState } from "../types/user-types";
+import toast from "react-hot-toast";
+import { TInvoice } from "../types/product-types";
 
 
 
@@ -13,9 +16,13 @@ const logo = "https://levitation.in/wp-content/uploads/2023/12/Frame-39624.svg";
 const Cart = () => {
 
     const dispatch = useDispatch();
+    const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
 
     const { cart: cartItems } = useSelector((state: { cartSlice: ICartReducerInitialState }) => state.cartSlice);
-
+    const { user } = useSelector((state: { userSlice: IUserReducerInitialState }) => state.userSlice);
 
 
     const total = useMemo(() => {
@@ -25,6 +32,64 @@ const Cart = () => {
     const GST = 18 * total / 100;
     const GrandTotal = total + GST;
 
+
+    const server = import.meta.env.VITE_SERVER;
+
+    const handleInvoice = async () => {
+
+        if (!user) return toast.error('Please login to generate invoice');
+
+        const invoice = {
+            userName: user.name,
+            userEmail: user.email,
+            userId: user._id,
+            products: cartItems,
+            total,
+            gst: GST,
+            grandTotal: GrandTotal,
+        }
+
+        await handleGenerateInvoice(invoice)
+
+    }
+
+
+    const handleGenerateInvoice = async (invoiceData: TInvoice) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await fetch(`${server}/api/v1/invoice/generate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(invoiceData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to generate invoice');
+            }
+
+            const pdfBlob = await response.blob();
+            const url = URL.createObjectURL(pdfBlob);
+            setPdfUrl(url);
+        } catch (error) {
+            setError(error.message || 'An error occurred');
+            console.error('Error generating invoice:', error);
+        }
+        finally{
+            setLoading(false);
+        }
+    };
+
+
+    if (pdfUrl) {
+        return (
+            <div>
+                <iframe title="Invoice PDF" src={pdfUrl} style={{ width: '100%', height: '600px' }} />
+            </div>
+        );
+    }
 
 
     return (
@@ -59,7 +124,13 @@ const Cart = () => {
                     <span className="flex justify-between font-bold"><p>GrandTotal: </p><p className="text-blue-400">₹ {GrandTotal.toFixed(2)}</p></span>
                 </div>
 
-                {cartItems.length > 0 && <button className="bg-cyan-400 font-semibold px-3 py-2 rounded-md text-center" >Generate Invoice</button>}
+                {cartItems.length > 0 &&
+                    <button
+                        onClick={handleInvoice}
+                        className="bg-cyan-400 font-semibold px-3 py-2 rounded-md text-center"
+                    >
+                        {loading ? 'Generating...' : 'Generate Invoice'}
+                    </button>}
             </aside>
         </div>
     );

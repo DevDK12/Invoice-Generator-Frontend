@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ProductsResponse } from "../../types/api-types";
+import {  ProductsResponse } from "../../types/api-types";
 
 
 const server = import.meta.env.VITE_SERVER;
@@ -13,7 +13,7 @@ export const productApi = createApi({
         }),
         allProducts: builder.query<ProductsResponse, void>({
             query: () => `all`,
-        })
+        }),
     })
 })
 

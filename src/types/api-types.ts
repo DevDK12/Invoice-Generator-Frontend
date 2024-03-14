@@ -34,3 +34,11 @@ export type ProductsResponse = {
         products: TProduct[]
     }
 }
+
+
+export type InvoiceResponse = {
+    status: string,
+    data: {
+        invoice: string
+    }
+}
