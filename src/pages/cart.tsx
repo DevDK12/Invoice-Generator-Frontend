@@ -18,7 +18,6 @@ const Cart = () => {
     const dispatch = useDispatch();
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
 
 
     const { cart: cartItems } = useSelector((state: { cartSlice: ICartReducerInitialState }) => state.cartSlice);
@@ -56,7 +55,6 @@ const Cart = () => {
 
     const handleGenerateInvoice = async (invoiceData: TInvoice) => {
         setLoading(true);
-        setError(null);
         try {
             const response = await fetch(`${server}/api/v1/invoice/generate`, {
                 method: 'POST',
@@ -74,7 +72,7 @@ const Cart = () => {
             const url = URL.createObjectURL(pdfBlob);
             setPdfUrl(url);
         } catch (error) {
-            setError(error.message || 'An error occurred');
+            toast.error('Failed to generate invoice')
             console.error('Error generating invoice:', error);
         }
         finally{
