@@ -7,6 +7,14 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 
+# Backend code 
+- Backend Repo is present [here](https://github.com/DevDK12/Invoice-Generator-Backend])
+
+
+
+# Test user 
+email : `test@email.com`
+password : `testtest`
 
 
 # Running project 
